@@ -1,0 +1,1 @@
+setuptools==17.1.1 # only pkg_resources

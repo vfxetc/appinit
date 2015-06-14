@@ -11,7 +11,7 @@
 
     --launchctl -> launchctl setenv $WHATEVER; works for this login session
     --export -> print for eval in shell
-    --install-pth -> install a .pth (for Maya, at least)
+    --install-sitehook -> install a .pth
 
     --background -> run in background
     --python -> run python for this app instead (and initialize it, if possible)
@@ -21,8 +21,12 @@
     appinit_maya -> anything post launch
     appinit_maya_gui -> GUI post launch
 
+    - maya does not have setuptools!
+
 - hook onto Maya setup BEFORE `maya.standalone.initialize()`
     - install a .pth file?
+    - /Applications/Autodesk/maya2015/Maya.app/Contents/Frameworks/Python.framework/Versions/Current/lib/python2.7/site-packages/zzz_appinit.pth
+    - import appinit.sitehook; appinit.sitehook.on_sitehook('maya')
 
 - do we provide enough hooks to find the rest of appinit just from the hook,
   or do we assume that the user must put all of that on the path(s) too?

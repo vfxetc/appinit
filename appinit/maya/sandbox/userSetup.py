@@ -12,7 +12,7 @@ state. So, be cautious, and clean up after yourself!
 
 '''
 
-print 'appinit/maya/sandbox/userSetup.py'
+print '[appinit] userSetup'
 
 # We can easily be sourced a few times.
 _appinit_counter = globals().get('_appinit_counter', 0) + 1

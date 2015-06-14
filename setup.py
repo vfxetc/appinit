@@ -19,6 +19,9 @@ setup(
             appinit-exec   = appinit.exec_:main
             appinit-python = appinit.exec_:main_python
         ''',
+        'appinit_maya_sitehook': '''
+            000_appinit_initialize = appinit.maya:on_sitehook
+        ''',
     }
 
 )
