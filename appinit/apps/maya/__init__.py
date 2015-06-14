@@ -30,6 +30,10 @@ class Maya(BaseApp):
         else:
             raise NotImplementedError(sys.platform)
 
+    def get_site_packages(self):
+        if sys.platform == 'darwin':
+            return '%s/Contents/Frameworks/Python.framework/Versions/Current/lib/python2.7/site-packages' % self.path
+
 
 
 

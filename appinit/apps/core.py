@@ -10,12 +10,12 @@ class BaseApp(object):
         self.path = path
         self.version = version
 
-    def get_site_packages(self):
-        return None
-
     def get_python(self):
         return None
 
+    def get_site_packages(self):
+        pass
+    
     def get_executable(self):
         raise NotImplementedError()
 

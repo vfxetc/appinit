@@ -43,7 +43,6 @@ class Houdini(BaseApp):
 
 
 
-
 def get_envvars():
     """Get the difference in environment that the houdini_setup script provides."""
 

@@ -12,6 +12,10 @@ commands.add_argument('-l', '--list', action='store_true',
     help='print installed versions of given app')
 commands.add_argument('-w', '--which', action='store_true',
     help='print which program will be called')
+commands.add_argument('--site-packages', action='store_true',
+    help='print location of Python site-packages')
+commands.add_argument('--install-sitehook', action='store_true',
+    help='install .pth hook into site-packages')
 
 parser.add_argument('-p', '--python', action='store_true',
     help='run Python interpreter for app')
@@ -52,6 +56,22 @@ def main(argv=None):
         return
 
     app = installed_apps[0]
+
+    if args.site_packages:
+        site_packages = app.get_site_packages()
+        if site_packages:
+            print site_packages
+        exit(0 if site_packages else 1)
+
+    if args.install_sitehook:
+        site_packages = app.get_site_packages()
+        if not site_packages:
+            print >> sys.stderr, 'no site-packages for %s' % args.app_name
+            exit(1)
+        from .sitehook import install_sitehook
+        install_sitehook(site_packages, args.app_name)
+        exit()
+
     executable = app.get_python() if args.python else app.get_executable()
 
     if args.which:
