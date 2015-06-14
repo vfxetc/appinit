@@ -113,15 +113,21 @@ def site_packages(args):
     help='install zzz_appinit.pth into Python site-packages',
 )
 def hook_site_packages(args):
-    from . import sitehook
+    import sitehooks
     res = 0
     for app in iter_installed_apps(args.apps):
         path = app.get_site_packages()
         if path:
             if args.uninstall:
-                sitehook.uninstall_site_hook(path, dry_run=args.dry_run, verbose=True)
+                sitehooks.uninstall(path,
+                    module='appinit',
+                    dry_run=args.dry_run, verbose=True
+                )
             else:
-                sitehook.install_site_hook(path, app.name, dry_run=args.dry_run, verbose=True)
+                sitehooks.install(path,
+                    module='appinit', func='init', postfix=app.name, args=(app.name, ),
+                    dry_run=args.dry_run, verbose=True
+                )
         else:
             res = 1
     return res

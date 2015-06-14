@@ -14,11 +14,27 @@ class Maya(BaseApp):
     def iter_installed(cls):
         if sys.platform == 'darwin':
             for path in glob.glob('/Applications/Autodesk/maya20*/Maya.app'):
-                m = re.search(r'/maya(20\d{2})/', path)
-                version = int(m.group(1))
-                yield cls(path, version)
+                app = cls.app_from_path(path)
+                if app:
+                    yield app
         else:
             raise NotImplementedError(sys.platform)
+
+    @classmethod
+    def app_from_path(cls, path):
+        if sys.platform == 'darwin':
+            m = re.match(r'^/Applications/Autodesk/maya(\d{4})/Maya.app($|/)', path)
+            if m:
+                return cls(m.group(0), int(m.group(1)))
+
+    @classmethod
+    def get_running_app(cls):
+        try:
+            import maya.cmds
+            import maya.utils
+        except ImportError:
+            return
+        return cls.app_from_path(maya.utils.__file__)
 
     def export(self, environ):
         environ.add('PYTHONPATH', os.path.abspath(os.path.join(

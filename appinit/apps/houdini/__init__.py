@@ -22,6 +22,23 @@ class Houdini(BaseApp):
         else:
             raise NotImplementedError(sys.platform)
 
+    @classmethod
+    def app_from_path(cls, app):
+        if sys.platform == 'darwin':
+            m = re.match(r'^/Library/Frameworks/Houdini.framework/Versions/(.+?)($|/)', path)
+            if m:
+                app_path = '/Applications/Houdini %s' % m.group(1)
+                if os.path.exists(app_path):
+                    return cls(app_path, m.group(1))
+
+    @classmethod
+    def get_running_app(cls):
+        try:
+            import hou
+        except ImportError:
+            return
+        return cls.app_from_path(hou.__file__)
+
     def export(self, environ):
         environ.setdefault('HOUDINI_PATH', '&')
         environ.add('HOUDINI_PATH', os.path.dirname(os.path.abspath(__file__)))

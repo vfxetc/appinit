@@ -19,6 +19,9 @@ setup(
         'console_scripts': '''
             appinit = appinit.command:main
         ''',
+        'sitehooks': '''
+            appinit = appinit:sitehook
+        ''',
         'appinit_apps': '''
             maya = appinit.apps.maya:Maya
             houdini = appinit.apps.houdini:Houdini

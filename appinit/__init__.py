@@ -31,3 +31,12 @@ def init(app_name):
                 e
             ))
 
+
+def sitehook():
+    from .apps.core import iter_app_classes
+    for cls in iter_app_classes():
+        app = cls.get_running_app()
+        if app:
+            init(app.name)
+            return
+

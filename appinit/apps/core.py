@@ -7,6 +7,10 @@ def _iter_entry_points(app_name=None):
     import pkg_resources
     return pkg_resources.iter_entry_points('appinit_apps', app_name)
 
+def iter_app_classes():
+    for ep in _iter_entry_points():
+        yield ep.load()
+
 
 class Version(tuple):
 
@@ -28,6 +32,10 @@ class BaseApp(object):
     @classmethod
     def iter_installed(cls):
         return iter(())
+
+    @classmethod
+    def get_running_app(cls):
+        pass
 
     def __init__(self, path=None, version=None):
         self.path = path
