@@ -23,8 +23,8 @@ setup(
             maya = appinit.apps.maya:Maya
             houdini = appinit.apps.houdini:Houdini
         ''',
-        'appinit_maya_sitehooks': '''
-            000_appinit_initialize = appinit.apps.maya:on_sitehook
+        'appinit_maya': '''
+            000_standalone_initialize = appinit.apps.maya:standalone_initialize
         ''',
     }
 

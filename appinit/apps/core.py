@@ -10,6 +10,9 @@ class BaseApp(object):
         self.path = path
         self.version = version
 
+    def get_envvars(self):
+        return {}
+    
     def get_python(self):
         return None
 

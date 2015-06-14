@@ -21,32 +21,12 @@
     appinit_maya -> anything post launch
     appinit_maya_gui -> GUI post launch
 
-    - maya does not have setuptools!
+- document structure of entrypoints
 
-- hook onto Maya setup BEFORE `maya.standalone.initialize()`
-    - install a .pth file?
-    - /Applications/Autodesk/maya2015/Maya.app/Contents/Frameworks/Python.framework/Versions/Current/lib/python2.7/site-packages/zzz_appinit.pth
-    - import appinit.sitehook; appinit.sitehook.on_sitehook('maya')
+- run houdini in foreground
 
 - do we provide enough hooks to find the rest of appinit just from the hook,
   or do we assume that the user must put all of that on the path(s) too?
 
-- houdini
-    - HOUDINI_PATH requires "&" to represent original path
-    - startup:
-        a) responds to first 123.py on startup WITHOUT a hip file (not reproduced here)
-        b) responds to first 456.py when a file is loaded or the session
-           is cleared (not reproduced (here)
-        b) searches $HOUDINI_PATH for ALL (confirmed):
-            - python2.{6,7}libs/pythonrc.py
-            - python2.{6,7}libs/.pythonrc.py
-            - houdini/scripts/python/pythonrc.py (for b/c; not reproduced here)
-    - plugins?
-
-- maya
-    - responds to ALL userSetup.py on PYTHONPATH
-    - plugins?
-
-- nuke
-    ???
+- hook onto Nuke
 

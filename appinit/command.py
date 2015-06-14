@@ -2,6 +2,9 @@ import argparse
 import os
 import sys
 
+from .environ import Environ
+
+
 parser = argparse.ArgumentParser()
 
 parser.add_argument('-V', '--version',
@@ -12,10 +15,14 @@ commands.add_argument('-l', '--list', action='store_true',
     help='print installed versions of given app')
 commands.add_argument('-w', '--which', action='store_true',
     help='print which program will be called')
+commands.add_argument('-e', '--export', action='store_true',
+    help='print envvars which will be used')
 commands.add_argument('--site-packages', action='store_true',
     help='print location of Python site-packages')
-commands.add_argument('--install-sitehook', action='store_true',
+commands.add_argument('--install-site-hook', action='store_true',
     help='install .pth hook into site-packages')
+commands.add_argument('--uninstall-site-hook', action='store_true',
+    help='remote .pth hook ggtom site-packages')
 
 parser.add_argument('-p', '--python', action='store_true',
     help='run Python interpreter for app')
@@ -57,19 +64,21 @@ def main(argv=None):
 
     app = installed_apps[0]
 
-    if args.site_packages:
-        site_packages = app.get_site_packages()
-        if site_packages:
-            print site_packages
-        exit(0 if site_packages else 1)
+    if args.site_packages or args.install_site_hook or args.uninstall_site_hook:
 
-    if args.install_sitehook:
         site_packages = app.get_site_packages()
         if not site_packages:
-            print >> sys.stderr, 'no site-packages for %s' % args.app_name
             exit(1)
-        from .sitehook import install_sitehook
-        install_sitehook(site_packages, args.app_name)
+
+        if args.site_packages:
+            print site_packages
+            exit()
+
+        from . import sitehook
+        if args.install_site_hook:
+            sitehook.install_site_hook(site_packages, app.name)
+        else:
+            sitehook.uninstall_site_hook(site_packages)
         exit()
 
     executable = app.get_python() if args.python else app.get_executable()
@@ -79,7 +88,18 @@ def main(argv=None):
             print executable
         exit(0 if executable else 1)
 
-    os.execve(executable, [executable], os.environ)
+    environ = Environ({} if args.export else os.environ)
+    app.export(environ)
+    environ.append('PYTHONPATH', os.path.abspath(os.path.join(
+        __file__, '..', '..',
+    )))
+
+    if args.export:
+        for k, v in sorted(environ.iteritems()):
+            print '%s="%s"' % (k, v)
+        exit()
+
+    os.execve(executable, [executable], environ)
 
 
 

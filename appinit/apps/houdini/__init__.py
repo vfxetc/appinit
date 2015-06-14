@@ -3,10 +3,8 @@ import re
 import subprocess
 import sys
 
-
 from ...utils import parse_env_output
 from ..core import BaseApp
-
 
 
 class Houdini(BaseApp):
@@ -21,6 +19,10 @@ class Houdini(BaseApp):
                     yield cls(app_path, version)
         else:
             raise NotImplementedError(sys.platform)
+
+    def export(self, environ):
+        environ.setdefault('HOUDINI_PATH', '&')
+        environ.append('HOUDINI_PATH', os.path.dirname(os.path.abspath(__file__)))
 
     @property
     def HFS(self):
