@@ -4,6 +4,7 @@ import sys
 import subprocess
 
 from .environ import LaunchctlEnviron, Environ
+from . import utils
 
 
 parser = argparse.ArgumentParser()
@@ -27,8 +28,11 @@ commands.add_argument('--install-site-hook', action='store_true',
 commands.add_argument('--uninstall-site-hook', action='store_true',
     help='remote .pth hook ggtom site-packages')
 
-parser.add_argument('-p', '--python', action='store_true',
+run_mode = parser.add_mutually_exclusive_group()
+run_mode.add_argument('-p', '--python', action='store_true',
     help='run Python interpreter for app')
+run_mode.add_argument('-b', '--background', action='store_true',
+    help='run app in the background')
 
 parser.add_argument('app_name')
 
@@ -84,12 +88,14 @@ def main(argv=None):
             sitehook.uninstall_site_hook(site_packages)
         exit()
 
-    executable = app.get_python() if args.python else app.get_executable()
+    command = app.get_python() if args.python else app.get_executable()
+    if isinstance(command, basestring):
+        command = [command]
 
     if args.which:
-        if executable:
-            print executable
-        exit(0 if executable else 1)
+        if command:
+            print ' '.join(command)
+        exit(0 if command else 1)
 
     environ = LaunchctlEnviron() if args.launchctl else Environ(os.environ)
     app.export(environ)
@@ -108,8 +114,10 @@ def main(argv=None):
             subprocess.check_call(cmd)
         exit()
 
+    if args.background:
+        utils.daemonize()
 
-    os.execve(executable, [executable], environ)
+    os.execve(command[0], command, environ)
 
 
 

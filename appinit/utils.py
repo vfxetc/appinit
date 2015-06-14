@@ -1,3 +1,4 @@
+import os
 import re
 
 
@@ -21,3 +22,20 @@ def diff_envvars(before, after, reduce=True):
         if a_value != b_value:
             diff[key] = a_value.replace(b_value, '$' + key) if reduce else a_value
     return diff
+
+
+def daemonize(chdir='/', umask=0002):
+
+    if os.fork(): # fork, and kill the parent
+        os._exit(0)
+
+    # take over the session
+    os.setsid()
+
+    if os.fork(): # fork, and kill the parent again; we are finally detached
+        os._exit(0)
+
+    if chdir is not None:
+        os.chdir(chdir)
+    if umask is not None:
+        os.umask(umask)

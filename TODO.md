@@ -7,14 +7,7 @@
     - launcher
     - applauncher
 
-- `appinit [options] APPNAME`
-
-    --launchctl -> launchctl setenv $WHATEVER; works for this login session
-    --export -> print for eval in shell
-    --install-sitehook -> install a .pth
-
-    --background -> run in background
-    --python -> run python for this app instead (and initialize it, if possible)
+- `appinit --background maya`
 
 - entrypoints to run after the app has setup:
     appinit_NAME_{gui,python}_{pre,post}_launch

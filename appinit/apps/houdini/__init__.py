@@ -33,7 +33,7 @@ class Houdini(BaseApp):
 
     def get_executable(self):
         if sys.platform == 'darwin':
-            return '%s/bin/houdini' % self.HFS
+            return ['%s/bin/houdini' % self.HFS, '-foreground']
         else:
             raise NotImplementedError(sys.platform)
 
