@@ -9,7 +9,7 @@ from ..core import BaseApp
 class Maya(BaseApp):
 
     name = 'maya'
-    
+
     @classmethod
     def iter_installed(cls):
         if sys.platform == 'darwin':
@@ -25,9 +25,9 @@ class Maya(BaseApp):
             __file__, '..', 'sandbox'
         )))
 
-    def get_executable(self):
+    def get_command(self):
         if sys.platform == 'darwin':
-            return '%s/Contents/MacOS/Maya' % self.path
+            return ['%s/Contents/MacOS/Maya' % self.path]
         else:
             raise NotImplementedError(sys.platform)
 
@@ -43,8 +43,7 @@ class Maya(BaseApp):
 
 
 
-
-def standalone_initialize(appname):
+def standalone_initialize():
     """Called during Maya startup to initialize standalone mode."""
     # NOTE: Initializing before the GUI is setup will segfault it, so we have to
     # be a little careful to not do that.

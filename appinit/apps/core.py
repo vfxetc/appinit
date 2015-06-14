@@ -42,7 +42,7 @@ class BaseApp(object):
     def get_site_packages(self):
         pass
     
-    def get_executable(self):
+    def get_command(self):
         raise NotImplementedError()
 
 

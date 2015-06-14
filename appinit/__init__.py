@@ -23,7 +23,7 @@ def init(app_name):
         print '[appinit]    ', ep
         try:
             func = ep.load()
-            func(app_name)
+            func()
         except Exception as e:
             warnings.warn('[appinit] %s during %s: %s' % (
                 e.__class__.__name__,

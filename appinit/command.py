@@ -61,7 +61,7 @@ def which(args):
     app = next(iter_installed_apps(args.app), None)
     if not app:
         return 1
-    print app.get_executable()
+    print app.get_command()[0]
 
 
 @command(
@@ -147,25 +147,29 @@ def hook_site_packages(args):
     parse_known_args=True,
     defaults={'python': False},
 )
-
 def exec_(args, unknown):
 
     app = next(iter_installed_apps(args.app), None)
     if not app:
         return 1
-    executable = app.get_python() if args.python else app.get_executable()
-    if not executable:
+
+    if args.python:
+        command = [app.get_python()]
+    else:
+        command = app.get_command()
+    if not command:
         return 2
+
+    command.extend(unknown)
     if args.which:
-        print executable
+        print ' '.join(command)
         return
 
     if args.background:
         utils.daemonize()
 
-    cmd = [executable] + unknown
     environ = get_environ(app, os.environ)
-    os.execve(executable, cmd, environ)
+    os.execve(command[0], command, environ)
 
 
 def main(argv=None):

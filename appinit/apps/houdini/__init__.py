@@ -10,7 +10,7 @@ from ..core import BaseApp
 class Houdini(BaseApp):
 
     name = 'houdini'
-    
+
     @classmethod
     def iter_installed(cls):
         if sys.platform == 'darwin':
@@ -29,11 +29,11 @@ class Houdini(BaseApp):
     @property
     def HFS(self):
         if sys.platform == 'darwin':
-            return '/Library/Frameworks/Houdini.framework/Versions/%s/Resources' % self.version
+            return '/Library/Frameworks/Houdini.framework/Versions/%s/Resources' % str(self.version)
         else:
             raise NotImplementedError(sys.platform)
 
-    def get_executable(self):
+    def get_command(self):
         if sys.platform == 'darwin':
             return ['%s/bin/houdini' % self.HFS, '-foreground']
         else:
