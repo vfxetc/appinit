@@ -9,6 +9,8 @@ from ..core import BaseApp
 
 class Houdini(BaseApp):
 
+    name = 'houdini'
+    
     @classmethod
     def iter_installed(cls):
         if sys.platform == 'darwin':

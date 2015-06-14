@@ -7,13 +7,6 @@
     - launcher
     - applauncher
 
-- `appinit maya==2015` ??
-- `appinit --export maya houdini` to export envvars for multiple?
-    - could say everything after `--` is args for the actual command:
-        appinit maya --python -- script.py
-    - could move to optparse which would require the options before the
-      arguments
-
 - verbosity via APPINIT_VERBOSE:
     - currently in:
         - appinit:init()

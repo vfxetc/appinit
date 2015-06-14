@@ -8,6 +8,8 @@ from ..core import BaseApp
 
 class Maya(BaseApp):
 
+    name = 'maya'
+    
     @classmethod
     def iter_installed(cls):
         if sys.platform == 'darwin':
