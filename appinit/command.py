@@ -83,9 +83,9 @@ def main(argv=None):
 
         from . import sitehook
         if args.install_site_hook:
-            sitehook.install_site_hook(site_packages, app.name)
+            sitehook.install_site_hook(site_packages, args.app_name, verbose=True)
         else:
-            sitehook.uninstall_site_hook(site_packages)
+            sitehook.uninstall_site_hook(site_packages, verbose=True)
         exit()
 
     command = app.get_python() if args.python else app.get_executable()
