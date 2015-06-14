@@ -22,7 +22,7 @@ class Houdini(BaseApp):
 
     def export(self, environ):
         environ.setdefault('HOUDINI_PATH', '&')
-        environ.append('HOUDINI_PATH', os.path.dirname(os.path.abspath(__file__)))
+        environ.add('HOUDINI_PATH', os.path.dirname(os.path.abspath(__file__)))
 
     @property
     def HFS(self):
@@ -69,16 +69,8 @@ def get_envvars():
     before = parse_env_output(raw_before)
     after = parse_env_output(raw_after)
 
-    diff = {}
-    for key, a_value in after.iteritems():
-        b_value = before.get(key)
-        if b_value is None:
-            diff[key] = a_value
-            continue
-        if a_value != b_value:
-            diff[key] = a_value.replace(b_value, '$' + key)
 
-    return diff
+    return diff_envvars(before, after)
 
 
 if __name__ == '__main__':

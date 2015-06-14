@@ -1,8 +1,9 @@
 import argparse
 import os
 import sys
+import subprocess
 
-from .environ import Environ
+from .environ import LaunchctlEnviron, Environ
 
 
 parser = argparse.ArgumentParser()
@@ -17,6 +18,8 @@ commands.add_argument('-w', '--which', action='store_true',
     help='print which program will be called')
 commands.add_argument('-e', '--export', action='store_true',
     help='print envvars which will be used')
+commands.add_argument('--launchctl', action='store_true',
+    help='set envvars in OS X launchctl for entire login session')
 commands.add_argument('--site-packages', action='store_true',
     help='print location of Python site-packages')
 commands.add_argument('--install-site-hook', action='store_true',
@@ -88,16 +91,23 @@ def main(argv=None):
             print executable
         exit(0 if executable else 1)
 
-    environ = Environ({} if args.export else os.environ)
+    environ = LaunchctlEnviron() if args.launchctl else Environ(os.environ)
     app.export(environ)
-    environ.append('PYTHONPATH', os.path.abspath(os.path.join(
+    environ.add('PYTHONPATH', os.path.abspath(os.path.join(
         __file__, '..', '..',
     )))
 
     if args.export:
-        for k, v in sorted(environ.iteritems()):
+        for k, v in sorted(environ.get_diff().iteritems()):
             print '%s="%s"' % (k, v)
         exit()
+    if args.launchctl:
+        for k, v in sorted(environ.get_diff(reduce=False).iteritems()):
+            cmd = ['launchctl', 'setenv', k, v]
+            print ' '.join(cmd)
+            subprocess.check_call(cmd)
+        exit()
+
 
     os.execve(executable, [executable], environ)
 

@@ -19,7 +19,7 @@ class Maya(BaseApp):
             raise NotImplementedError(sys.platform)
 
     def export(self, environ):
-        environ.append('PYTHONPATH', os.path.abspath(os.path.join(
+        environ.add('PYTHONPATH', os.path.abspath(os.path.join(
             __file__, '..', 'sandbox'
         )))
 

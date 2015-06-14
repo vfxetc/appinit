@@ -1,14 +1,14 @@
 import warnings
 
-
-_inited = False
+# Have we already run?
+inited = False
 
 def init(app_name):
 
-    global _inited
-    if _inited:
+    global inited
+    if inited:
         return
-    _inited = True # don't want for it to complete; only allow to error once
+    inited = True # don't want for it to complete; only allow to error once
 
     print '[appinit] calling hooks for %s:' % app_name
 
