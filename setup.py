@@ -14,13 +14,17 @@ setup(
     license='BSD-3',
     
     include_package_data=True,
+    
     entry_points={
         'console_scripts': '''
-            appinit-exec   = appinit.exec_:main
-            appinit-python = appinit.exec_:main_python
+            appinit = appinit.command:main
         ''',
-        'appinit_maya_sitehook': '''
-            000_appinit_initialize = appinit.maya:on_sitehook
+        'appinit_apps': '''
+            maya = appinit.apps.maya:Maya
+            houdini = appinit.apps.houdini:Houdini
+        ''',
+        'appinit_maya_sitehooks': '''
+            000_appinit_initialize = appinit.apps.maya:on_sitehook
         ''',
     }
 

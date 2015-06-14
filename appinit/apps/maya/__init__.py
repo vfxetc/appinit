@@ -1,5 +1,21 @@
+import glob
 import os
+import re
 import sys
+
+from ..core import BaseApp
+
+
+class Maya(BaseApp):
+
+    @classmethod
+    def iter_installed(cls):
+        if sys.platform == 'darwin':
+            for path in glob.glob('/Applications/Autodesk/maya20*/Maya.app'):
+                m = re.search(r'/maya(20\d{2})/', path)
+                version = int(m.group(1))
+                yield cls(path, version)
+
 
 
 def on_sitehook(appname):

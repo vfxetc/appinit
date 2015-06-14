@@ -1,16 +1,26 @@
+import os
 import re
 import subprocess
-import os
+import sys
 
 
-def _parse_envvars(env_output):
-    res = {}
-    for line in env_output.splitlines():
-        m = re.match(r'^(\w+)=(.*)$', line)
-        if m:
-            key, value = m.groups()
-            res[key] = value
-    return res
+from ...utils import parse_env_output
+from ..core import BaseApp
+
+
+
+class Houdini(BaseApp):
+
+    @classmethod
+    def iter_installed(cls):
+        if sys.platform == 'darwin':
+            frameworks = '/Library/Frameworks/Houdini.framework/Versions'
+            for version in os.listdir(frameworks):
+                app_path = '/Applications/Houdini %s' % version
+                if os.path.exists(app_path):
+                    yield cls(app_path, version)
+
+
 
 
 def get_envvars():
@@ -34,8 +44,8 @@ def get_envvars():
     '''.format(delimiter)], cwd=resources_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, _ = proc.communicate()
     raw_before, _, raw_after = out.split(delimiter)
-    before = _parse_envvars(raw_before)
-    after = _parse_envvars(raw_after)
+    before = parse_env_output(raw_before)
+    after = parse_env_output(raw_after)
 
     diff = {}
     for key, a_value in after.iteritems():
