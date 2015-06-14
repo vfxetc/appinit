@@ -15,6 +15,21 @@ class Maya(BaseApp):
                 m = re.search(r'/maya(20\d{2})/', path)
                 version = int(m.group(1))
                 yield cls(path, version)
+        else:
+            raise NotImplementedError(sys.platform)
+
+    def get_executable(self):
+        if sys.platform == 'darwin':
+            return '%s/Contents/MacOS/Maya' % self.path
+        else:
+            raise NotImplementedError(sys.platform)
+
+    def get_python(self):
+        if sys.platform == 'darwin':
+            return '%s/Contents/bin/mayapy' % self.path
+        else:
+            raise NotImplementedError(sys.platform)
+
 
 
 

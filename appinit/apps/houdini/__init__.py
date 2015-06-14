@@ -19,6 +19,27 @@ class Houdini(BaseApp):
                 app_path = '/Applications/Houdini %s' % version
                 if os.path.exists(app_path):
                     yield cls(app_path, version)
+        else:
+            raise NotImplementedError(sys.platform)
+
+    @property
+    def HFS(self):
+        if sys.platform == 'darwin':
+            return '/Library/Frameworks/Houdini.framework/Versions/%s/Resources' % self.version
+        else:
+            raise NotImplementedError(sys.platform)
+
+    def get_executable(self):
+        if sys.platform == 'darwin':
+            return '%s/bin/houdini' % self.HFS
+        else:
+            raise NotImplementedError(sys.platform)
+
+    def get_python(self):
+        if sys.platform == 'darwin':
+            return '%s/bin/hython' % self.HFS
+        else:
+            raise NotImplementedError(sys.platform)
 
 
 
