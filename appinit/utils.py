@@ -2,6 +2,7 @@ import contextlib
 import functools
 import os
 import re
+import sys
 import warnings
 
 
@@ -38,7 +39,7 @@ def call_entry_points(cls, force=False, verbose=True):
     _called_entry_points.add(cls)
 
     if verbose:
-        print '[appinit] calling hooks for %s' % cls
+        print >> sys.stderr, '[appinit] calling hooks for %s' % cls
 
     from . import _vendor
     _vendor.install()
@@ -47,7 +48,7 @@ def call_entry_points(cls, force=False, verbose=True):
     for ep in sorted(pkg_resources.iter_entry_points(cls), key=lambda ep: ep.name):
         with warn_on_error('during entry point %s' % ep, reraise=False):
             if verbose:
-                print '[appinit]    ', ep
+                print >> sys.stderr, '[appinit]    ', ep
             func = ep.load()
             func()
 

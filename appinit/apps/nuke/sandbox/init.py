@@ -1,8 +1,9 @@
+import sys
 
 # We can easily be sourced a few times.
 _appinit_nuke_counter = globals().get('_appinit_nuke_counter', 0) + 1
 if _appinit_nuke_counter == 1:
-    print '[appinit] nuke hooked via init'
+    print >> sys.stderr, '[appinit] nuke hooked via init'
     try:
         import appinit
         appinit.init('nuke')
