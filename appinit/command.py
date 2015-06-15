@@ -75,12 +75,13 @@ def export(args):
 
 
 @command(
+    argument('-c', '--clean', action='store_true'),
     argument('-U', '--uninstall', action='store_true'),
     argument('-n', '--dry-run', action='store_true'),
     argument('apps', nargs='*'),
     help='set envvars in OS X launchctl for entire login session')
 def hook_launchctl(args):
-    environ = get_environ(args.apps, base={}, cls=LaunchctlEnviron)
+    environ = get_environ(args.apps, base={}, cls=None if args.clean else LaunchctlEnviron)
     for k, v in sorted(environ.get_diff(reduce=False).iteritems()):
         if args.uninstall:
             cmd = ['launchctl', 'unsetenv', k]
