@@ -8,7 +8,7 @@ if _appinit_123_counter == 1:
     print '[appinit] houdini hooked via 123'
     try:
         import appinit
-        appinit.init('houdini_gui')
+        appinit.init('houdini')
     except Exception as e:
         import warnings
         warnings.warn('[appinit] %s during appinit.init(): %s' % (e.__class__.__name__, e))

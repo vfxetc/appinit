@@ -26,11 +26,11 @@ setup(
             maya = appinit.apps.maya:Maya
             houdini = appinit.apps.houdini:Houdini
         ''',
-        'appinit_maya': '''
+        'appinit.maya': '''
             000_standalone_initialize = appinit.apps.maya:standalone_initialize
         ''',
-        'appinit_houdini': '''
-            appinit_houdini_gui_idle = appinit.apps.houdini:_defer_gui_init
+        'appinit.houdini': '''
+            appinit_houdini_gui_idle = appinit.apps.houdini.runtime:_defer_gui_idle_trigger
         ''',
     }
 

@@ -3,8 +3,11 @@ import warnings
 from .utils import call_entry_points
 
 
-def init(ep_name):
-    call_entry_points('appinit_%s' % ep_name)
+def init(name):
+    name_parts = name.split('.')
+    for i in xrange(len(name_parts) + 1):
+        ep_parts = ['appinit'] + name_parts[:i]
+        call_entry_points('.'.join(ep_parts))
 
 
 def sitehook():
