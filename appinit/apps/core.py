@@ -16,13 +16,19 @@ class Version(tuple):
 
     def __new__(cls, input_):
         if isinstance(input_, basestring):
-            input_ = map(int, input_.split('.'))
-        if isinstance(input_, int):
+            str_value = input_
+            input_ = map(int, re.split(r'\D', input_))
+        elif isinstance(input_, int):
+            str_value = str(input_)
             input_ = (input_, )
-        return super(Version, cls).__new__(cls, input_)
+        else:
+            str_value = '.'.join(input_)
+        self = super(Version, cls).__new__(cls, input_)
+        self._str_value = str_value
+        return self
 
     def __str__(self):
-        return '.'.join(map(str, self))
+        return self._str_value
 
 
 class BaseApp(object):

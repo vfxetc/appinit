@@ -23,8 +23,9 @@ setup(
             appinit = appinit:sitehook
         ''',
         'appinit_apps': '''
-            maya = appinit.apps.maya:Maya
             houdini = appinit.apps.houdini:Houdini
+            maya = appinit.apps.maya:Maya
+            nuke = appinit.apps.nuke:Nuke
         ''',
         'appinit.maya': '''
             000_standalone_initialize = appinit.apps.maya:standalone_initialize
