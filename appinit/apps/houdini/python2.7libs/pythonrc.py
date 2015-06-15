@@ -11,4 +11,4 @@ if _appinit_counter == 1:
         appinit.init('houdini')
     except Exception as e:
         import warnings
-        warnings.warn('[appinit] exception %s during init: %s' % (e.__class__.__name__, e))
+        warnings.warn('[appinit] %s during appinit.init(): %s' % (e.__class__.__name__, e))

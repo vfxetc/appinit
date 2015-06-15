@@ -3,7 +3,7 @@ import re
 import subprocess
 import sys
 
-from ...utils import parse_env_output
+from ...utils import parse_env_output, call_entry_points
 from ..core import BaseApp
 
 
@@ -62,6 +62,23 @@ class Houdini(BaseApp):
         else:
             raise NotImplementedError(sys.platform)
 
+
+
+_idle_funcs = []
+def call_once_on_idle(func):
+    _idle_funcs.append(func)
+    import hou
+    hou.ui.addEventLoopCallback(_on_idle)
+
+def _on_idle():
+    while _idle_funcs:
+        func = _idle_funcs.pop(0)
+        func()
+    import hou
+    hou.ui.removeEventLoopCallback(_on_idle)
+
+def _defer_gui_init():
+    call_once_on_idle(lambda: call_entry_points('appinit_houdini_gui_idle'))
 
 
 def get_envvars():

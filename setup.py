@@ -29,6 +29,9 @@ setup(
         'appinit_maya': '''
             000_standalone_initialize = appinit.apps.maya:standalone_initialize
         ''',
+        'appinit_houdini': '''
+            appinit_houdini_gui_idle = appinit.apps.houdini:_defer_gui_init
+        ''',
     }
 
 )
