@@ -68,3 +68,8 @@ def standalone_initialize():
     if os.path.basename(sys.executable).lower().startswith('python'):
         from maya import standalone
         standalone.initialize()
+
+def gui_initialize():
+    if not os.path.basename(sys.executable).lower().startswith('python'):
+        from ... import init
+        init('maya.gui')

@@ -78,12 +78,13 @@ class AppSelector(object):
             for app in cls.iter_installed():
                 if self.version is None:
                     yield app
-                elif self.operator == '==' and self.version == app.version:
-                    yield app
+                elif self.operation == '==':
+                    if self.version == app.version:
+                        yield app
                 else:
                     # Arguably this should be in the constructor, but this is
                     # more certain to catch errors.
-                    raise ValueError('unknown version operator %s' % self.operator)
+                    raise ValueError('unknown version operation %s' % self.operation)
 
 
 def iter_installed_apps(selectors=None):

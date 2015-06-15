@@ -30,6 +30,7 @@ setup(
         ''',
         'appinit.maya': '''
             000_standalone_initialize = appinit.apps.maya:standalone_initialize
+            zzz_gui_initialize = appinit.apps.maya:gui_initialize
         ''',
         'appinit.houdini': '''
             appinit_houdini_gui_idle = appinit.apps.houdini.runtime:_defer_gui_idle_trigger
