@@ -24,6 +24,7 @@ setup(
         ''',
         'appinit_apps': '''
             houdini = appinit.apps.houdini:Houdini
+            mari = appinit.apps.mari:Mari
             maya = appinit.apps.maya:Maya
             nuke = appinit.apps.nuke:Nuke
         ''',
