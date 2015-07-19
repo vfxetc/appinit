@@ -17,7 +17,7 @@ class Version(tuple):
     def __new__(cls, input_):
         if isinstance(input_, basestring):
             str_value = input_
-            input_ = map(int, re.split(r'\D', input_))
+            input_ = map(int, filter(None, re.split(r'\D', input_)))
         elif isinstance(input_, int):
             str_value = str(input_)
             input_ = (input_, )

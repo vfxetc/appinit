@@ -1,4 +1,6 @@
 
+- have non-version metadata, e.g. for IT's host and version
+
 - name:
     - appinit
     - vfxinit
