@@ -18,7 +18,7 @@ class Mari(BaseApp):
                 if app:
                     yield app
         else:
-            raise NotImplementedError(sys.platform)
+            pass #raise NotImplementedError(sys.platform)
 
     @classmethod
     def app_from_path(cls, path):

@@ -17,8 +17,13 @@ class Maya(BaseApp):
                 app = cls.app_from_path(path)
                 if app:
                     yield app
+        elif sys.platform == 'linux2':
+            for path in glob.glob('/usr/autodesk/maya20*'):
+                app = cls.app_from_path(path)
+                if app:
+                    yield app
         else:
-            raise NotImplementedError(sys.platform)
+            pass #raise NotImplementedError(sys.platform)
 
     @classmethod
     def app_from_path(cls, path):
@@ -26,6 +31,10 @@ class Maya(BaseApp):
             m = re.match(r'^/Applications/Autodesk/maya(\d{4})/Maya.app($|/)', path)
             if m:
                 return cls(m.group(0), int(m.group(1)))
+        if sys.platform == 'linux2':
+            m = re.search(r'maya(\d{4})(/|$)', path)
+            if m:
+                return cls(path, int(m.group(1)))
 
     @classmethod
     def get_running_app(cls):
@@ -44,13 +53,16 @@ class Maya(BaseApp):
     def get_command(self):
         if sys.platform == 'darwin':
             return ['%s/Contents/MacOS/Maya' % self.path]
+        elif sys.platform == 'linux2':
+            return ['%s/bin/maya%s' % (self.path, self.version)]
         else:
             raise NotImplementedError(sys.platform)
 
     def get_python(self):
         if sys.platform == 'darwin':
             return '%s/Contents/bin/mayapy' % self.path
-        else:
+        elif sys.platform == 'linux2':
+            return '%s/bin/mayapy' % self.path
             raise NotImplementedError(sys.platform)
 
     def get_site_packages(self):

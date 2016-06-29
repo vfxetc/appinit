@@ -29,7 +29,7 @@ class Houdini(BaseApp):
                 if os.path.exists(app_path):
                     yield cls(app_path, version)
         else:
-            raise NotImplementedError(sys.platform)
+            pass #raise NotImplementedError(sys.platform)
 
     @classmethod
     def app_from_path(cls, app):
