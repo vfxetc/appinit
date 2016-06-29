@@ -1,3 +1,4 @@
+import errno
 import os
 import re
 import subprocess
@@ -14,8 +15,16 @@ class Houdini(BaseApp):
     @classmethod
     def iter_installed(cls):
         if sys.platform == 'darwin':
-            frameworks = '/Library/Frameworks/Houdini.framework/Versions'
-            for version in os.listdir(frameworks):
+
+            framework_dir = '/Library/Frameworks/Houdini.framework/Versions'
+            try:
+                versions = os.listdir(framework_dir)
+            except OSError as e:
+                if e.errno == errno.ENOENT:
+                    return
+                raise
+
+            for version in versions:
                 app_path = '/Applications/Houdini %s' % version
                 if os.path.exists(app_path):
                     yield cls(app_path, version)
