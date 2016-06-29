@@ -1,5 +1,8 @@
+import os
 import re
 
+from .. import utils
+from ..environ import Environ
 
 def _iter_entry_points(app_name=None):
     from .. import _vendor
@@ -58,6 +61,24 @@ class BaseApp(object):
     
     def get_command(self):
         raise NotImplementedError()
+
+    def exec_(self, args, env=None, python=False, background=False):
+
+        if python:
+            command = [self.get_python()]
+        else:
+            command = self.get_command()
+        if not command:
+            raise ValueError('no command to exec')
+        command.extend(args)
+
+        env = Environ(env or os.environ)
+        self.export(env)
+
+        if background:
+            utils.daemonize()
+        os.execve(command[0], command, env)
+
 
 
 class AppSelector(object):

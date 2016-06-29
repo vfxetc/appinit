@@ -1,4 +1,7 @@
 
+- have `run` command use App.exec_()
+    - Why is there a difference in PYTHONPATH?
+    
 - have non-version metadata, e.g. for IT's host and version
 
 - name:
