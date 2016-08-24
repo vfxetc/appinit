@@ -3,6 +3,7 @@ import functools
 import os
 import re
 import sys
+import traceback
 import warnings
 
 
@@ -18,7 +19,7 @@ def only_once(func):
 
 
 @contextlib.contextmanager
-def warn_on_error(extra='', reraise=True):
+def warn_on_error(extra='', reraise=True, print_exc=False):
     try:
         yield
     except BaseException as e:
@@ -27,6 +28,8 @@ def warn_on_error(extra='', reraise=True):
             ' ' + extra if extra else '',
             e
         ))
+        if print_exc:
+            traceback.print_exc()
         if reraise:
             raise
 
@@ -46,7 +49,7 @@ def call_entry_points(cls, force=False, verbose=True):
     import pkg_resources
     
     for ep in sorted(pkg_resources.iter_entry_points(cls), key=lambda ep: ep.name):
-        with warn_on_error('during entry point %s' % ep, reraise=False):
+        with warn_on_error('during entry point %s' % ep, reraise=False, print_exc=True):
             if verbose:
                 print >> sys.stderr, '[appinit]    ', ep
             func = ep.load()
