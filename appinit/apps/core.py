@@ -62,11 +62,11 @@ class BaseApp(object):
     def get_command(self):
         raise NotImplementedError()
 
-    def exec_(self, args, env=None, python=False, background=False):
+    def exec_(self, args, command=None, env=None, python=False, background=False):
 
         if python:
             command = [self.get_python()]
-        else:
+        elif command is None:
             command = self.get_command()
         if not command:
             raise ValueError('no command to exec')
