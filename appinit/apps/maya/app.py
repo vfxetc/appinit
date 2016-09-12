@@ -68,6 +68,8 @@ class Maya(BaseApp):
     def get_site_packages(self):
         if sys.platform == 'darwin':
             return '%s/Contents/Frameworks/Python.framework/Versions/Current/lib/python2.7/site-packages' % self.path
+        elif sys.platform.startswith('linux'):
+            return '%s/lib/python2.7/site-packages' % self.path
 
 
 
