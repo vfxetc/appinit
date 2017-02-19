@@ -28,13 +28,13 @@ class Maya(BaseApp):
     @classmethod
     def app_from_path(cls, path):
         if sys.platform == 'darwin':
-            m = re.match(r'^/Applications/Autodesk/maya(\d{4})/Maya.app($|/)', path)
+            m = re.match(r'^/Applications/Autodesk/maya(\d{4}(?:\.\d+)?)/Maya.app($|/)', path)
             if m:
-                return cls(m.group(0), int(m.group(1)))
+                return cls(m.group(0), m.group(1))
         if sys.platform == 'linux2':
-            m = re.search(r'maya(\d{4})(/|$)', path)
+            m = re.search(r'maya(\d{4}(?:\.\d+)?)(/|$)', path)
             if m:
-                return cls(path, int(m.group(1)))
+                return cls(path, m.group(1))
 
     @classmethod
     def get_running_app(cls):
