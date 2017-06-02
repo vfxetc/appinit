@@ -1,5 +1,6 @@
 import os
 import re
+import subprocess
 
 from .. import utils
 from ..environ import Environ
@@ -62,7 +63,7 @@ class BaseApp(object):
     def get_command(self):
         raise NotImplementedError()
 
-    def exec_(self, args, command=None, env=None, python=False, background=False):
+    def prepare_command(self, args, command=None, env=None, python=False):
 
         if python:
             command = [self.get_python()]
@@ -75,9 +76,18 @@ class BaseApp(object):
         env = Environ(env or os.environ)
         self.export(env)
 
+        return command, env
+
+    def popen(self, *args, **kwargs):
+        cmd, env = self.prepare_command(*args, **kwargs)
+        return subprocess.Popen(cmd, env=env)
+
+    def exec_(self, *args, **kwargs):
+        background = kwargs.pop('background', None)
+        cmd, env = self.prepare_command(*args, **kwargs)
         if background:
             utils.daemonize()
-        os.execve(command[0], command, env)
+        os.execve(cmd[0], cmd, env)
 
 
 
