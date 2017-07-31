@@ -5,6 +5,7 @@ import subprocess
 from .. import utils
 from ..environ import Environ
 
+
 def _iter_entry_points(app_name=None):
     from .. import _vendor
     _vendor.install()
@@ -118,7 +119,7 @@ class AppSelector(object):
                     raise ValueError('unknown version operation %s' % self.operation)
 
 
-def iter_installed_apps(selectors=None):
+def _iter_installed_apps(selectors=None):
     selectors = selectors or None
     if not isinstance(selectors, (list, tuple)):
         selectors = [selectors]
@@ -129,4 +130,11 @@ def iter_installed_apps(selectors=None):
         selector = AppSelector(selector)
         for app in selector.iter_installed():
             yield app
+
+def iter_installed_apps(selectors=None, sort=True):
+    iter_ = _iter_installed_apps(selectors)
+    if sort:
+        return iter(sorted(iter_, key=lambda app: (app.name, [-x for x in app.version])))
+    else:
+        return iter_
 
