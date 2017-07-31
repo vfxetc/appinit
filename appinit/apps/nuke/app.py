@@ -13,7 +13,7 @@ class Nuke(BaseApp):
     @classmethod
     def iter_installed(cls):
         if sys.platform == 'darwin':
-            for path in glob.glob('/Applications/Nuke*/Nuke*.app'):
+            for path in sorted(glob.glob('/Applications/Nuke*/Nuke*.app'), reverse=True):
                 app = cls.app_from_path(path)
                 if app:
                     yield app
