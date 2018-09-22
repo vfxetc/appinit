@@ -80,7 +80,14 @@ def standalone_initialize():
     # OS X Maya.app -> /Applications/Autodesk/maya2015/Maya.app/Contents/MacOS/Maya
     # OS X Python -> /Applications/Autodesk/maya2015/Maya.app/Contents/bin/../Frameworks/Python.framework/Versions/Current/Resources/Python.app/Contents/MacOS/Python
     if os.path.basename(sys.executable).lower().startswith('python'):
-        from maya import standalone
+
+        # Don't initialize again; it causes problems sometimes.
+        # I don't really know how you could get here without running initialize
+        # already, because how else would the userSetup.py get imported?
+        from maya import cmds, standalone
+        if hasattr(cmds, 'ls'):
+            return
+
         standalone.initialize()
 
 def gui_initialize():
