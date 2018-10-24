@@ -3,14 +3,14 @@ from setuptools import setup, find_packages
 setup(
 
     name='appinit',
-    version='0.1.0',
+    version='1.0.0',
     description='Unified startup for VFX applications.',
-    url='http://github.com/sitg/appinit',
+    url='http://github.com/vfxetc/appinit',
     
     packages=find_packages(exclude=['build*', 'tests*']),
     
     author='Mike Boers',
-    author_email='appinit@mikeboers.com',
+    author_email='floss+appinit@vfxetc.com',
     license='BSD-3',
     
     include_package_data=True,
