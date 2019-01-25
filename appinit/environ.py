@@ -23,6 +23,25 @@ class Mixin(object):
             self[key] = '%s:%s' % (self[key], value)
         except KeyError:
             self[key] = value
+    
+    def prepend(self, key, value):
+        try:
+            self[key] = '%s:%s' % (value, self[key])
+        except KeyError:
+            self[key] = value
+
+    def remove(self, name, value, strict=True):
+        existing = self.get(name, None)
+        if not existing:
+            raise KeyError(name)
+        before = existing.split(':')
+        after = [x for x in before if x != value]
+        if before == after:
+            if strict:
+                raise ValueError(value)
+            return 0
+        self[name] = ':'.join(after)
+        return len(before) - len(after)
 
     def get_diff(self, reduce=True):
         return utils.diff_envvars(self._original, self, reduce=reduce)
